@@ -1,20 +1,24 @@
 <template>
-  <h1>Job Details</h1>
-  <!-- <p>The job id is {{ $route.params.id }}</p> -->
-  <p>The job id is {{ id }}</p>
+  <h1 v-if="job">{{ job.title }}</h1>
+  <p v-if="job">{{ job.details }}</p>
 </template>
 
 <script>
 export default {
-  props: ['id'],
-  // data() {
-  //   return {
-  //     id: this.$route.params.id
-  //   }
-  // }
-}
+  props: ["id"],
+  data() {
+    return {
+      job: null,
+    };
+  },
+  mounted() {
+    fetch("http://localhost:3000/jobs/" + this.id)
+      .then((resp) => resp.json)
+      .then((data) => (this.job = data))
+      .catch((err) => console.log(err.message));
+  },
+};
 </script>
 
 <style>
-
 </style>
