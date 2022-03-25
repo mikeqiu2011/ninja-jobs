@@ -1,6 +1,11 @@
 <template>
-  <h1 v-if="job">{{ job.title }}</h1>
-  <p v-if="job">{{ job.details }}</p>
+  <div v-if="job">
+    <h1>{{ job.title }}</h1>
+    <p>{{ job.details }}</p>
+  </div>
+  <div v-else>
+    <p>Loading job details</p>
+  </div>
 </template>
 
 <script>
@@ -13,8 +18,11 @@ export default {
   },
   mounted() {
     fetch("http://localhost:3000/jobs/" + this.id)
-      .then((resp) => resp.json)
-      .then((data) => (this.job = data))
+      .then((resp) => resp.json())
+      .then((data) => {
+        this.job = data;
+        console.log(this.job);
+      })
       .catch((err) => console.log(err.message));
   },
 };
